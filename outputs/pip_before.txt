@@ -306,6 +306,7 @@ rqt-srv==1.2.3
 rqt-topic==1.7.5
 ruamel.yaml @ file:///home/task_176253513425147/conda-bld/ruamel.yaml_1762535953901/work
 ruamel.yaml.clib @ file:///home/task_176253026464970/conda-bld/ruamel.yaml.clib_1762530279190/work
+scikit-fuzzy==0.5.0
 scikit-image==0.26.0
 scikit-learn==1.9.1
 scipy==1.18.1

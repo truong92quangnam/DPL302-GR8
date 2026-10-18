@@ -407,6 +407,7 @@ dependencies:
       - rfc3986-validator==0.1.1
       - rfc3987-syntax==1.1.0
       - rpds-py==2026.6.3
+      - scikit-fuzzy==0.5.0
       - scikit-image==0.26.0
       - scikit-learn==1.9.1
       - scipy==1.18.1

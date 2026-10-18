@@ -106,10 +106,10 @@ class FuzzyByteTrackController:
         low_change = float(self._simulation.output["low_thresh_delta"])
         buffer_change = float(self._simulation.output["buffer_delta"])
 
-        # Clipping giữ ngưỡng hợp lệ, high không vượt ngưỡng tạo track mới.
-        adjusted_high = float(np.clip(track_high_thresh + high_change, 0.0, new_track_thresh))
-        adjusted_low = float(np.clip(track_low_thresh + low_change, 0.0, adjusted_high))
-        adjusted_buffer = int(np.clip(round(track_buffer + buffer_change), 5, 90))
+        # Clipping giữ ngưỡng hợp lệ theo Mục 7 (chỉ điều chỉnh track_high_thresh, giữ nguyên low và buffer)
+        adjusted_high = float(np.clip(track_high_thresh + high_change, track_low_thresh, 0.45))
+        adjusted_low = float(track_low_thresh)
+        adjusted_buffer = int(track_buffer)
         return FuzzyAdjustment(
             **inputs,
             high_thresh_delta=high_change,

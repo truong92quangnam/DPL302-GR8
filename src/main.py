@@ -57,7 +57,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--mode",
         required=True,
-        choices=["cache_detections", "baseline", "ga", "fuzzy", "evaluate", "compare"],
+        choices=["cache_detections", "baseline", "ga", "ga_bytetrack", "fuzzy", "evaluate", "compare"],
         help="Chế độ thực thi",
     )
     parser.add_argument(
@@ -111,6 +111,7 @@ def run_cache_detections(
     device: str,
     dry_run: bool,
     smoke_test: bool,
+    split_choice: str = "development",
 ) -> None:
     """Sinh detection cache cho các sequence mục tiêu."""
     print("=" * 60)
@@ -122,8 +123,8 @@ def run_cache_detections(
     detector_config = config["detector"]
     max_frames = 30 if smoke_test else None
 
-    sequences = get_target_sequences(splits_config, dataset_root, split_choice="all")
-    print(f"Tổng số sequence cần cache: {len(sequences)}")
+    sequences = get_target_sequences(splits_config, dataset_root, split_choice=split_choice)
+    print(f"Tập dữ liệu: {split_choice} ({len(sequences)} sequences cần cache)")
     for name, _, _ in sequences:
         print(f"  - {name}")
 
@@ -182,6 +183,14 @@ def run_tracking_experiment(
         return
 
     tracker_config = config["bytetrack"]
+    if mode == "ga_bytetrack":
+        ga_cfg_path = Path("configs/ga_bytetrack.yaml")
+        if ga_cfg_path.is_file():
+            tracker_config = load_yaml(ga_cfg_path)
+            print(f"[*] Sử dụng cấu hình GA tối ưu từ: {ga_cfg_path}")
+        else:
+            print(f"[!] Cảnh báo: Không tìm thấy {ga_cfg_path}, dùng cấu hình mặc định.")
+
     use_fuzzy = (mode == "fuzzy")
     fuzzy_controller = FuzzyByteTrackController() if use_fuzzy else None
 
@@ -384,33 +393,137 @@ def run_ga_optimization(
         print("\n[DRY RUN] Đã kiểm tra không gian tìm kiếm GA và sequences phát triển.")
         return
 
+    from src.genetic_optimizer import GeneticOptimizer
+    import configparser
+
     ga_params = config["ga"]
-    pop_size = 4 if smoke_test else int(ga_params.get("population_size", 10))
+    pop_size = 3 if smoke_test else int(ga_params.get("population_size", 10))
     generations = 2 if smoke_test else int(ga_params.get("generations", 8))
 
     print(f"\nBắt đầu GA: Population={pop_size}, Generations={generations}...")
 
-    # Bộ tham số tối ưu hóa
-    best_candidate = {
-        "track_high_thresh": 0.28,
-        "track_low_thresh": 0.10,
-        "new_track_thresh": 0.28,
-        "track_buffer": 30,
-        "match_thresh": 0.82,
-        "fuse_score": True,
-    }
+    def ga_evaluator(params: dict[str, Any], eval_id: str) -> dict[str, float]:
+        candidate_cfg = {**config["bytetrack"], **params}
+        tracker = AdaptiveByteTracker(candidate_cfg)
+        total_hota, total_idf1, total_mota = 0.0, 0.0, 0.0
+        total_frames = 0
+        t0 = time.perf_counter()
 
-    # Ghi file cấu hình kết quả GA
-    with ga_config_output.open("w", encoding="utf-8") as f:
-        yaml.safe_dump({
-            "tracker_type": "bytetrack",
-            **best_candidate,
-            "population_size": pop_size,
-            "generations": generations,
-            "optimized_on": "development_split_only",
-        }, f)
+        for seq_name, seq_path, gt_path in dev_sequences:
+            try:
+                dets_by_frame, _, _ = load_cached_detections(cache_dir, seq_name)
+            except FileNotFoundError:
+                continue
 
-    print(f"[OK] Đã lưu cấu hình GA tốt nhất vào: {ga_config_output}")
+            tracker.reset_state()
+            fids = sorted(dets_by_frame.keys())
+            if smoke_test:
+                fids = fids[:30]
+
+            rows = []
+            for fid in fids:
+                raw_dets = dets_by_frame[fid]
+                if len(raw_dets) > 0:
+                    xywh = xyxy_to_xywh(raw_dets[:, :4])
+                    confs = raw_dets[:, 4]
+                    clss = raw_dets[:, 5].astype(int)
+                else:
+                    xywh = np.empty((0, 4), dtype=np.float32)
+                    confs = np.empty((0,), dtype=np.float32)
+                    clss = np.empty((0,), dtype=np.int32)
+
+                dets = DetectionResults(xywh, confs, clss)
+                tracks, _, _ = tracker.update_with_threshold(dets)
+                for trk in tracks:
+                    rows.append({
+                        "frame_id": fid,
+                        "track_id": int(trk[4]),
+                        "x1": float(trk[0]),
+                        "y1": float(trk[1]),
+                        "x2": float(trk[2]),
+                        "y2": float(trk[3]),
+                        "confidence": float(trk[5]),
+                        "class_id": int(trk[6]),
+                    })
+
+            total_frames += len(fids)
+            cand_dir = output_dir / "tmp_eval" / eval_id / seq_name
+            mot_txt = cand_dir / "pred.txt"
+            tracking_csv = cand_dir / "track.csv"
+            write_csv(rows, tracking_csv)
+            tracking_csv_to_mot(tracking_csv, mot_txt)
+
+            # Đọc seqinfo
+            ini_path = seq_path / "seqinfo.ini"
+            fps = 30.0
+            width = 1920
+            height = 1080
+            if ini_path.is_file():
+                cp = configparser.ConfigParser()
+                cp.read(ini_path)
+                if "Sequence" in cp:
+                    fps = float(cp["Sequence"].get("frameRate", 30.0))
+                    width = int(cp["Sequence"].get("imWidth", 1920))
+                    height = int(cp["Sequence"].get("imHeight", 1080))
+
+            if gt_path is not None and gt_path.is_file():
+                try:
+                    gt_eval_file = gt_path
+                    if smoke_test:
+                        df_gt_all = pd.read_csv(gt_path, header=None)
+                        df_gt_sliced = df_gt_all[df_gt_all.iloc[:, 0] <= len(fids)]
+                        gt_eval_file = cand_dir / "gt_sliced.txt"
+                        df_gt_sliced.to_csv(gt_eval_file, header=False, index=False)
+
+                    te = evaluate_with_trackeval(
+                        prediction_file=mot_txt,
+                        gt_file=gt_eval_file,
+                        sequence_name=seq_name,
+                        work_dir=cand_dir,
+                        frame_count=len(fids),
+                        width=width,
+                        height=height,
+                        fps=fps,
+                    )
+                    total_hota += te["HOTA"]
+                    total_idf1 += te["IDF1"]
+                    total_mota += te["MOTA"]
+                except Exception as e:
+                    pass
+
+        elapsed = max(time.perf_counter() - t0, 1e-4)
+        fps_cand = total_frames / elapsed
+        n_seq = max(len(dev_sequences), 1)
+        # Dọn dẹp thư mục tạm
+        shutil.rmtree(output_dir / "tmp_eval" / eval_id, ignore_errors=True)
+        return {
+            "HOTA": total_hota / n_seq,
+            "IDF1": total_idf1 / n_seq,
+            "MOTA": total_mota / n_seq,
+            "FPS": fps_cand,
+        }
+
+    optimizer = GeneticOptimizer(
+        evaluator=ga_evaluator,
+        population_size=pop_size,
+        generations=generations,
+        crossover_rate=float(ga_params.get("crossover_rate", 0.8)),
+        mutation_rate=float(ga_params.get("mutation_rate", 0.2)),
+        elitism=int(ga_params.get("elitism", 1)),
+        seed=42,
+    )
+
+    best_candidate = optimizer.optimize(
+        output_dir=output_dir,
+        config_output=ga_config_output,
+        base_config=config["bytetrack"],
+    )
+
+    print(f"\n[THÀNH CÔNG] GA hoàn tất! Tham số tốt nhất:")
+    for k, v in best_candidate.parameters.items():
+        print(f"  {k}: {v}")
+    print(f"Fitness tốt nhất: {best_candidate.fitness:.4f}")
+    print(f"Cấu hình đã lưu vào: {ga_config_output}")
 
 
 def run_evaluate(
@@ -432,7 +545,7 @@ def run_evaluate(
 
     # Duyệt qua các mode đã chạy
     reports = []
-    for mode in ["baseline", "fuzzy"]:
+    for mode in ["baseline", "ga_bytetrack", "fuzzy"]:
         mode_dir = results_base / mode
         if not mode_dir.is_dir():
             continue
@@ -451,21 +564,60 @@ def run_evaluate(
                     max_frame = validate_mot_file(pred_file, allow_empty=True)
                     df_pred = pd.read_csv(pred_file, header=None)
                     df_gt = pd.read_csv(gt_file, header=None)
-                    reports.append({
+
+                    dev_seqs = splits_config.get("splits", {}).get("development", {}).get("sequences", [])
+                    split_label = "development" if seq_folder.name in dev_seqs else "local_held_out"
+                    entry: dict[str, Any] = {
                         "mode": mode,
                         "sequence": seq_folder.name,
+                        "split": split_label,
                         "pred_boxes": len(df_pred),
-                        "pred_tracks": int(df_pred.iloc[:, 1].nunique()),
+                        "pred_tracks": int(df_pred.iloc[:, 1].nunique()) if len(df_pred) else 0,
                         "gt_boxes": len(df_gt),
-                        "gt_tracks": int(df_gt.iloc[:, 1].nunique()),
-                    })
+                        "gt_tracks": int(df_gt.iloc[:, 1].nunique()) if len(df_gt) else 0,
+                    }
+
+                    # Đọc thông số seqinfo.ini
+                    import configparser
+                    seq_dir = dataset_root / "train" / seq_folder.name
+                    ini_path = seq_dir / "seqinfo.ini"
+                    if ini_path.is_file():
+                        cp = configparser.ConfigParser()
+                        cp.read(ini_path)
+                        seq_sec = cp["Sequence"] if "Sequence" in cp else {}
+                        fps = float(seq_sec.get("frameRate", 30.0))
+                        width = int(seq_sec.get("imWidth", 1920))
+                        height = int(seq_sec.get("imHeight", 1080))
+                        frame_count = max(int(seq_sec.get("seqLength", max_frame)), max_frame, 1)
+
+                        try:
+                            te_metrics = evaluate_with_trackeval(
+                                prediction_file=pred_file,
+                                gt_file=gt_file,
+                                sequence_name=seq_folder.name,
+                                work_dir=seq_folder / "eval_tmp",
+                                frame_count=frame_count,
+                                width=width,
+                                height=height,
+                                fps=fps,
+                            )
+                            entry.update({
+                                "HOTA": round(te_metrics["HOTA"] * 100, 2),
+                                "IDF1": round(te_metrics["IDF1"] * 100, 2),
+                                "MOTA": round(te_metrics["MOTA"] * 100, 2),
+                                "IDSW": te_metrics["ID_switches"],
+                            })
+                        except Exception as te_exc:
+                            print(f"TrackEval thông báo trên {seq_folder.name}: {te_exc}")
+
+                    reports.append(entry)
                 except Exception as exc:
                     print(f"Lỗi kiểm tra {seq_folder.name}: {exc}")
 
     df_eval = pd.DataFrame(reports)
     eval_csv = results_base / "evaluation_summary.csv"
     df_eval.to_csv(eval_csv, index=False)
-    print(f"[OK] Đã xuất bảng đánh giá: {eval_csv}")
+    print(f"\n[OK] Đã xuất bảng đánh giá chuẩn: {eval_csv}")
     print(df_eval.to_string())
 
 
@@ -481,8 +633,10 @@ def main() -> None:
     splits_config = load_yaml(splits_path)
 
     if args.mode == "cache_detections":
-        run_cache_detections(config, splits_config, args.device, args.dry_run, args.smoke_test)
-    elif args.mode in ("baseline", "fuzzy"):
+        run_cache_detections(
+            config, splits_config, args.device, args.dry_run, args.smoke_test, split_choice=args.split
+        )
+    elif args.mode in ("baseline", "ga_bytetrack", "fuzzy"):
         run_tracking_experiment(config, splits_config, args.mode, args.split, args.dry_run, args.smoke_test)
     elif args.mode == "ga":
         run_ga_optimization(config, splits_config, args.dry_run, args.smoke_test)

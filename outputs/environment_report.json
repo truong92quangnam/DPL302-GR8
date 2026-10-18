@@ -28,12 +28,20 @@
     "cuda_version": "12.6"
   },
   "gpu": {
-    "cuda_available": false,
-    "device_count": 0,
-    "devices": [],
-    "nvidia_smi_available": false,
-    "nvidia_smi_output": null,
-    "nvidia_smi_error": ""
+    "cuda_available": true,
+    "device_count": 1,
+    "devices": [
+      {
+        "index": 0,
+        "name": "NVIDIA GeForce RTX 3050 Laptop GPU",
+        "total_memory_gb": 3.68,
+        "major": 8,
+        "minor": 6,
+        "multi_processor_count": 16
+      }
+    ],
+    "nvidia_smi_available": true,
+    "nvidia_smi_output": "NVIDIA GeForce RTX 3050 Laptop GPU, 4096 MiB, 580.178.04"
   },
   "ultralytics": {
     "version": "8.4.153"

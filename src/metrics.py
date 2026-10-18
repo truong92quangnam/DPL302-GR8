@@ -10,6 +10,14 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+# NumPy 2.x compatibility patch cho TrackEval
+if not hasattr(np, "float"):
+    np.float = float
+if not hasattr(np, "int"):
+    np.int = int
+if not hasattr(np, "bool"):
+    np.bool = bool
+
 MOT_COLUMNS = ["frame", "id", "bb_left", "bb_top", "bb_width", "bb_height", "conf", "class", "visibility"]
 
 
