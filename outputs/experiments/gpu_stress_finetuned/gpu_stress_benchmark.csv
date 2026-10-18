@@ -1,0 +1,2 @@
+model,imgsz,total_frames,peak_vram_allocated_mb,peak_vram_reserved_mb,vram_utilization_pct,detector_mean_ms,tracker_mean_ms,end_to_end_fps,total_detections,HOTA,IDF1,MOTA,IDSW
+models/yolov8n_mot17_finetuned.pt,1280,600,70.4,100.0,2.4,21.51,3.09,40.1,18711,32.4,36.84,20.42,372
