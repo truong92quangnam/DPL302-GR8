@@ -1,0 +1,36 @@
+{
+  "status": "valid",
+  "split_strategy": "scene_based",
+  "development": {
+    "num_base_scenes": 4,
+    "base_scenes": [
+      "MOT17-02",
+      "MOT17-05",
+      "MOT17-09",
+      "MOT17-10"
+    ],
+    "num_primary_sequences": 4,
+    "primary_sequences": [
+      "MOT17-02-FRCNN",
+      "MOT17-05-FRCNN",
+      "MOT17-09-FRCNN",
+      "MOT17-10-FRCNN"
+    ],
+    "total_sequences_with_variants": 12
+  },
+  "held_out": {
+    "num_base_scenes": 3,
+    "base_scenes": [
+      "MOT17-04",
+      "MOT17-11",
+      "MOT17-13"
+    ],
+    "num_primary_sequences": 3,
+    "primary_sequences": [
+      "MOT17-04-FRCNN",
+      "MOT17-11-FRCNN",
+      "MOT17-13-FRCNN"
+    ],
+    "total_sequences_with_variants": 9
+  }
+}

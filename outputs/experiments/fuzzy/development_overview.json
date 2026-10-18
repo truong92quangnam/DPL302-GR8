@@ -1,0 +1,142 @@
+[
+  {
+    "sequence": "MOT17-02-FRCNN",
+    "mode": "fuzzy",
+    "split": "development",
+    "total_frames": 30,
+    "total_tracks": 17,
+    "timing": {
+      "measurement_mode": "cached_tracking",
+      "warmup_frames_excluded": 5,
+      "measured_frames": 25,
+      "tracker": {
+        "mean_ms": 1.166,
+        "median_ms": 1.105,
+        "p95_ms": 1.406,
+        "tracker_only_fps": 857.6
+      },
+      "detector": {
+        "mean_ms": 109.497,
+        "median_ms": 107.878,
+        "p95_ms": 114.861
+      },
+      "fuzzy_controller": {
+        "mean_ms": 3.582,
+        "median_ms": 3.548,
+        "p95_ms": 4.136
+      },
+      "end_to_end_pipeline": {
+        "mean_ms": 114.245,
+        "median_ms": 112.532,
+        "p95_ms": 119.727,
+        "end_to_end_fps": 8.8
+      }
+    },
+    "timestamp": "2026-10-17T17:50:12Z"
+  },
+  {
+    "sequence": "MOT17-05-FRCNN",
+    "mode": "fuzzy",
+    "split": "development",
+    "total_frames": 30,
+    "total_tracks": 11,
+    "timing": {
+      "measurement_mode": "cached_tracking",
+      "warmup_frames_excluded": 5,
+      "measured_frames": 25,
+      "tracker": {
+        "mean_ms": 0.745,
+        "median_ms": 0.732,
+        "p95_ms": 0.853,
+        "tracker_only_fps": 1342.3
+      },
+      "detector": {
+        "mean_ms": 135.236,
+        "median_ms": 134.96,
+        "p95_ms": 144.231
+      },
+      "fuzzy_controller": {
+        "mean_ms": 3.423,
+        "median_ms": 3.343,
+        "p95_ms": 3.824
+      },
+      "end_to_end_pipeline": {
+        "mean_ms": 139.405,
+        "median_ms": 139.09,
+        "p95_ms": 148.34,
+        "end_to_end_fps": 7.2
+      }
+    },
+    "timestamp": "2026-10-17T17:50:12Z"
+  },
+  {
+    "sequence": "MOT17-09-FRCNN",
+    "mode": "fuzzy",
+    "split": "development",
+    "total_frames": 30,
+    "total_tracks": 13,
+    "timing": {
+      "measurement_mode": "cached_tracking",
+      "warmup_frames_excluded": 5,
+      "measured_frames": 25,
+      "tracker": {
+        "mean_ms": 0.779,
+        "median_ms": 0.782,
+        "p95_ms": 0.864,
+        "tracker_only_fps": 1283.7
+      },
+      "detector": {
+        "mean_ms": 112.747,
+        "median_ms": 111.816,
+        "p95_ms": 122.43
+      },
+      "fuzzy_controller": {
+        "mean_ms": 3.331,
+        "median_ms": 3.322,
+        "p95_ms": 3.572
+      },
+      "end_to_end_pipeline": {
+        "mean_ms": 116.856,
+        "median_ms": 115.932,
+        "p95_ms": 126.709,
+        "end_to_end_fps": 8.6
+      }
+    },
+    "timestamp": "2026-10-17T17:50:12Z"
+  },
+  {
+    "sequence": "MOT17-10-FRCNN",
+    "mode": "fuzzy",
+    "split": "development",
+    "total_frames": 30,
+    "total_tracks": 26,
+    "timing": {
+      "measurement_mode": "cached_tracking",
+      "warmup_frames_excluded": 5,
+      "measured_frames": 25,
+      "tracker": {
+        "mean_ms": 1.026,
+        "median_ms": 1.04,
+        "p95_ms": 1.234,
+        "tracker_only_fps": 974.7
+      },
+      "detector": {
+        "mean_ms": 113.41,
+        "median_ms": 111.739,
+        "p95_ms": 124.349
+      },
+      "fuzzy_controller": {
+        "mean_ms": 3.248,
+        "median_ms": 3.207,
+        "p95_ms": 3.536
+      },
+      "end_to_end_pipeline": {
+        "mean_ms": 117.685,
+        "median_ms": 116.034,
+        "p95_ms": 128.862,
+        "end_to_end_fps": 8.5
+      }
+    },
+    "timestamp": "2026-10-17T17:50:12Z"
+  }
+]

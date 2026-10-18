@@ -1,0 +1,10 @@
+{
+  "dataset_name": "MOT17",
+  "source_type": "direct_url",
+  "source_identifier": "motchallenge_official",
+  "download_url": "https://motchallenge.net/data/MOT17.zip",
+  "start_time": "2026-10-18T00:29:03.945839",
+  "status": "completed",
+  "end_time": "2026-10-18T00:43:52.342459",
+  "archive_size_bytes": 5860214001
+}

@@ -1,0 +1,10 @@
+fuse_score: true
+generations: 2
+match_thresh: 0.82
+new_track_thresh: 0.28
+optimized_on: development_split_only
+population_size: 4
+track_buffer: 30
+track_high_thresh: 0.28
+track_low_thresh: 0.1
+tracker_type: bytetrack

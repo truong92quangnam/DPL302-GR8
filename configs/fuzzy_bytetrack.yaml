@@ -1,0 +1,14 @@
+# Tham số ban đầu; fuzzy controller chỉ thay đổi trong giới hạn nhỏ.
+tracker_type: bytetrack
+track_high_thresh: 0.25
+track_low_thresh: 0.10
+new_track_thresh: 0.25
+track_buffer: 30
+match_thresh: 0.80
+fuse_score: true
+
+fuzzy:
+  enabled: true
+  high_thresh_delta_limit: 0.10
+  low_thresh_delta_limit: 0.05
+  buffer_delta_limit: 10

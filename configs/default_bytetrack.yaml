@@ -1,0 +1,14 @@
+# ByteTrack mặc định; các trường này được Ultralytics đọc khi khởi tạo tracker.
+tracker_type: bytetrack
+# Detection dùng trong association chính.
+track_high_thresh: 0.25
+# Ngưỡng thấp để cứu track trong association thứ hai.
+track_low_thresh: 0.10
+# Ngưỡng tối thiểu để tạo track mới.
+new_track_thresh: 0.25
+# Số frame tối đa giữ track khi mất detection.
+track_buffer: 30
+# Ngưỡng cost/similarity khi ghép detection với track.
+match_thresh: 0.80
+# Kết hợp detection confidence với IoU/motion cost khi ghép.
+fuse_score: true

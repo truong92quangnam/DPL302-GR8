@@ -1,0 +1,54 @@
+bytetrack:
+  fuse_score: true
+  match_thresh: 0.8
+  new_track_thresh: 0.25
+  track_buffer: 30
+  track_high_thresh: 0.25
+  track_low_thresh: 0.1
+  tracker_type: bytetrack
+cache:
+  cache_dir: data/cache/detections
+  enabled: true
+  format: npz
+dataset:
+  name: MOT17
+  primary_detector_suffix: FRCNN
+  root_dir: data/MOT17
+  splits_file: configs/splits.yaml
+detector:
+  classes:
+  - 0
+  conf: 0.01
+  device: auto
+  half: false
+  imgsz: 1280
+  iou: 0.7
+  model_name: yolov8n.pt
+experiment_name: mot17_fuzzy_bytetrack_study
+fuzzy:
+  delta_high_thresh_limit: 0.1
+  enabled: true
+  track_high_thresh_max: 0.45
+  track_high_thresh_min: 0.15
+  use_prior_unmatched: true
+ga:
+  crossover_rate: 0.8
+  elitism: 2
+  generations: 8
+  mutation_rate: 0.2
+  param_ranges:
+    match_thresh:
+    - 0.6
+    - 0.9
+    track_high_thresh:
+    - 0.15
+    - 0.45
+  population_size: 10
+  seeds:
+  - 42
+  - 43
+  - 44
+outputs:
+  results_dir: outputs/experiments
+  save_annotated_video: false
+project_root: .

@@ -1,0 +1,59 @@
+# Cấu hình phân chia dataset MOT17 chống rò rỉ dữ liệu (No Data Leakage)
+# Nguyên tắc:
+# 1. Tách theo video gốc (base video scene), tuyệt đối không tách ngẫu nhiên theo frame.
+# 2. Toàn bộ các biến thể detector (DPM, FRCNN, SDP) của cùng một video PHẢI nằm cùng một split.
+# 3. GA và Fuzzy chỉ được tinh chỉnh trên development_split.
+# 4. held_out_split được khóa hoàn toàn cho tới khi đánh giá cuối cùng ("local held-out evaluation").
+# 5. Không sử dụng tập test official của MOT17 vì không có ground-truth công khai.
+
+split_strategy: "scene_based"
+primary_detector_suffix: "FRCNN" # Chọn biến thể detector mặc định để tránh trùng lặp tính toán
+
+splits:
+  development:
+    description: "Tập phát triển và tối ưu hóa tham số (dành cho GA và Fuzzy rule tuning)"
+    base_scenes:
+      - "MOT17-02" # Phố đi bộ, góc quay thấp, đông đúc
+      - "MOT17-05" # Quảng trường đi bộ, camera cầm tay di chuyển
+      - "MOT17-09" # Phố đi bộ ban ngày, góc quay cao
+      - "MOT17-10" # Phố đêm, camera gắn trên xe/di chuyển
+    sequences:
+      - "MOT17-02-FRCNN"
+      - "MOT17-05-FRCNN"
+      - "MOT17-09-FRCNN"
+      - "MOT17-10-FRCNN"
+    all_detector_variants:
+      - "MOT17-02-DPM"
+      - "MOT17-02-FRCNN"
+      - "MOT17-02-SDP"
+      - "MOT17-05-DPM"
+      - "MOT17-05-FRCNN"
+      - "MOT17-05-SDP"
+      - "MOT17-09-DPM"
+      - "MOT17-09-FRCNN"
+      - "MOT17-09-SDP"
+      - "MOT17-10-DPM"
+      - "MOT17-10-FRCNN"
+      - "MOT17-10-SDP"
+
+  held_out:
+    description: "Tập kiểm thử độc lập nội bộ (Local held-out evaluation - KHÓA trong quá trình GA/Fuzzy)"
+    base_scenes:
+      - "MOT17-04" # Đường phố ban đêm góc cao, đông phương tiện và người đi bộ
+      - "MOT17-11" # Trung tâm thương mại trong nhà, ánh sáng nhân tạo
+      - "MOT17-13" # Ngã tư xe buýt, camera di chuyển trên xe
+    sequences:
+      - "MOT17-04-FRCNN"
+      - "MOT17-11-FRCNN"
+      - "MOT17-13-FRCNN"
+    all_detector_variants:
+      - "MOT17-04-DPM"
+      - "MOT17-04-FRCNN"
+      - "MOT17-04-SDP"
+      - "MOT17-11-DPM"
+      - "MOT17-11-FRCNN"
+      - "MOT17-11-SDP"
+      - "MOT17-13-DPM"
+      - "MOT17-13-FRCNN"
+      - "MOT17-13-SDP"
+
