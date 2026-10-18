@@ -1,0 +1,107 @@
+[
+  {
+    "sequence": "MOT17-04-FRCNN",
+    "mode": "ga_bytetrack",
+    "split": "held_out",
+    "total_frames": 1050,
+    "total_tracks": 73,
+    "timing": {
+      "measurement_mode": "cached_tracking",
+      "warmup_frames_excluded": 5,
+      "measured_frames": 1045,
+      "tracker": {
+        "mean_ms": 1.345,
+        "median_ms": 1.178,
+        "p95_ms": 1.983,
+        "tracker_only_fps": 743.5
+      },
+      "detector": {
+        "mean_ms": 22.006,
+        "median_ms": 21.679,
+        "p95_ms": 24.61
+      },
+      "fuzzy_controller": {
+        "mean_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.0
+      },
+      "end_to_end_pipeline": {
+        "mean_ms": 23.35,
+        "median_ms": 22.948,
+        "p95_ms": 26.141,
+        "end_to_end_fps": 42.8
+      }
+    },
+    "timestamp": "2026-10-18T02:04:22Z"
+  },
+  {
+    "sequence": "MOT17-11-FRCNN",
+    "mode": "ga_bytetrack",
+    "split": "held_out",
+    "total_frames": 900,
+    "total_tracks": 69,
+    "timing": {
+      "measurement_mode": "cached_tracking",
+      "warmup_frames_excluded": 5,
+      "measured_frames": 895,
+      "tracker": {
+        "mean_ms": 0.586,
+        "median_ms": 0.534,
+        "p95_ms": 1.049,
+        "tracker_only_fps": 1706.5
+      },
+      "detector": {
+        "mean_ms": 19.926,
+        "median_ms": 19.667,
+        "p95_ms": 22.032
+      },
+      "fuzzy_controller": {
+        "mean_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.0
+      },
+      "end_to_end_pipeline": {
+        "mean_ms": 20.512,
+        "median_ms": 20.237,
+        "p95_ms": 22.685,
+        "end_to_end_fps": 48.8
+      }
+    },
+    "timestamp": "2026-10-18T02:04:23Z"
+  },
+  {
+    "sequence": "MOT17-13-FRCNN",
+    "mode": "ga_bytetrack",
+    "split": "held_out",
+    "total_frames": 750,
+    "total_tracks": 61,
+    "timing": {
+      "measurement_mode": "cached_tracking",
+      "warmup_frames_excluded": 5,
+      "measured_frames": 745,
+      "tracker": {
+        "mean_ms": 0.451,
+        "median_ms": 0.434,
+        "p95_ms": 0.7,
+        "tracker_only_fps": 2217.3
+      },
+      "detector": {
+        "mean_ms": 21.294,
+        "median_ms": 20.796,
+        "p95_ms": 24.693
+      },
+      "fuzzy_controller": {
+        "mean_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.0
+      },
+      "end_to_end_pipeline": {
+        "mean_ms": 21.745,
+        "median_ms": 21.259,
+        "p95_ms": 25.061,
+        "end_to_end_fps": 46.0
+      }
+    },
+    "timestamp": "2026-10-18T02:04:23Z"
+  }
+]

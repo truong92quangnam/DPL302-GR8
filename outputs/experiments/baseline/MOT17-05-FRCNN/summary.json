@@ -2,22 +2,22 @@
   "sequence": "MOT17-05-FRCNN",
   "mode": "baseline",
   "split": "development",
-  "total_frames": 30,
-  "total_tracks": 11,
+  "total_frames": 837,
+  "total_tracks": 214,
   "timing": {
     "measurement_mode": "cached_tracking",
     "warmup_frames_excluded": 5,
-    "measured_frames": 25,
+    "measured_frames": 832,
     "tracker": {
-      "mean_ms": 0.477,
-      "median_ms": 0.483,
-      "p95_ms": 0.553,
-      "tracker_only_fps": 2096.4
+      "mean_ms": 0.804,
+      "median_ms": 0.792,
+      "p95_ms": 1.062,
+      "tracker_only_fps": 1243.8
     },
     "detector": {
-      "mean_ms": 135.236,
-      "median_ms": 134.96,
-      "p95_ms": 144.231
+      "mean_ms": 18.432,
+      "median_ms": 18.379,
+      "p95_ms": 19.366
     },
     "fuzzy_controller": {
       "mean_ms": 0.0,
@@ -25,11 +25,11 @@
       "p95_ms": 0.0
     },
     "end_to_end_pipeline": {
-      "mean_ms": 135.713,
-      "median_ms": 135.396,
-      "p95_ms": 144.737,
-      "end_to_end_fps": 7.4
+      "mean_ms": 19.236,
+      "median_ms": 19.173,
+      "p95_ms": 20.252,
+      "end_to_end_fps": 52.0
     }
   },
-  "timestamp": "2026-10-17T17:49:39Z"
+  "timestamp": "2026-10-18T01:50:09Z"
 }

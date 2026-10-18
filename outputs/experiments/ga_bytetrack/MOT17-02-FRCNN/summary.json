@@ -1,0 +1,35 @@
+{
+  "sequence": "MOT17-02-FRCNN",
+  "mode": "ga_bytetrack",
+  "split": "development",
+  "total_frames": 600,
+  "total_tracks": 41,
+  "timing": {
+    "measurement_mode": "cached_tracking",
+    "warmup_frames_excluded": 5,
+    "measured_frames": 595,
+    "tracker": {
+      "mean_ms": 0.609,
+      "median_ms": 0.592,
+      "p95_ms": 0.8,
+      "tracker_only_fps": 1642.0
+    },
+    "detector": {
+      "mean_ms": 20.639,
+      "median_ms": 20.692,
+      "p95_ms": 22.347
+    },
+    "fuzzy_controller": {
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "p95_ms": 0.0
+    },
+    "end_to_end_pipeline": {
+      "mean_ms": 21.248,
+      "median_ms": 21.259,
+      "p95_ms": 23.005,
+      "end_to_end_fps": 47.1
+    }
+  },
+  "timestamp": "2026-10-18T02:01:24Z"
+}

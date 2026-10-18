@@ -1,0 +1,142 @@
+[
+  {
+    "sequence": "MOT17-02-FRCNN",
+    "mode": "ga_bytetrack",
+    "split": "development",
+    "total_frames": 600,
+    "total_tracks": 41,
+    "timing": {
+      "measurement_mode": "cached_tracking",
+      "warmup_frames_excluded": 5,
+      "measured_frames": 595,
+      "tracker": {
+        "mean_ms": 0.609,
+        "median_ms": 0.592,
+        "p95_ms": 0.8,
+        "tracker_only_fps": 1642.0
+      },
+      "detector": {
+        "mean_ms": 20.639,
+        "median_ms": 20.692,
+        "p95_ms": 22.347
+      },
+      "fuzzy_controller": {
+        "mean_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.0
+      },
+      "end_to_end_pipeline": {
+        "mean_ms": 21.248,
+        "median_ms": 21.259,
+        "p95_ms": 23.005,
+        "end_to_end_fps": 47.1
+      }
+    },
+    "timestamp": "2026-10-18T02:01:24Z"
+  },
+  {
+    "sequence": "MOT17-05-FRCNN",
+    "mode": "ga_bytetrack",
+    "split": "development",
+    "total_frames": 837,
+    "total_tracks": 103,
+    "timing": {
+      "measurement_mode": "cached_tracking",
+      "warmup_frames_excluded": 5,
+      "measured_frames": 832,
+      "tracker": {
+        "mean_ms": 0.576,
+        "median_ms": 0.459,
+        "p95_ms": 0.68,
+        "tracker_only_fps": 1736.1
+      },
+      "detector": {
+        "mean_ms": 18.432,
+        "median_ms": 18.379,
+        "p95_ms": 19.366
+      },
+      "fuzzy_controller": {
+        "mean_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.0
+      },
+      "end_to_end_pipeline": {
+        "mean_ms": 19.008,
+        "median_ms": 18.849,
+        "p95_ms": 19.861,
+        "end_to_end_fps": 52.6
+      }
+    },
+    "timestamp": "2026-10-18T02:01:25Z"
+  },
+  {
+    "sequence": "MOT17-09-FRCNN",
+    "mode": "ga_bytetrack",
+    "split": "development",
+    "total_frames": 525,
+    "total_tracks": 41,
+    "timing": {
+      "measurement_mode": "cached_tracking",
+      "warmup_frames_excluded": 5,
+      "measured_frames": 520,
+      "tracker": {
+        "mean_ms": 0.506,
+        "median_ms": 0.497,
+        "p95_ms": 0.668,
+        "tracker_only_fps": 1976.3
+      },
+      "detector": {
+        "mean_ms": 19.3,
+        "median_ms": 19.161,
+        "p95_ms": 20.043
+      },
+      "fuzzy_controller": {
+        "mean_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.0
+      },
+      "end_to_end_pipeline": {
+        "mean_ms": 19.806,
+        "median_ms": 19.682,
+        "p95_ms": 20.485,
+        "end_to_end_fps": 50.5
+      }
+    },
+    "timestamp": "2026-10-18T02:01:25Z"
+  },
+  {
+    "sequence": "MOT17-10-FRCNN",
+    "mode": "ga_bytetrack",
+    "split": "development",
+    "total_frames": 654,
+    "total_tracks": 81,
+    "timing": {
+      "measurement_mode": "cached_tracking",
+      "warmup_frames_excluded": 5,
+      "measured_frames": 649,
+      "tracker": {
+        "mean_ms": 0.678,
+        "median_ms": 0.659,
+        "p95_ms": 0.874,
+        "tracker_only_fps": 1474.9
+      },
+      "detector": {
+        "mean_ms": 18.97,
+        "median_ms": 18.811,
+        "p95_ms": 20.044
+      },
+      "fuzzy_controller": {
+        "mean_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.0
+      },
+      "end_to_end_pipeline": {
+        "mean_ms": 19.648,
+        "median_ms": 19.493,
+        "p95_ms": 20.632,
+        "end_to_end_fps": 50.9
+      }
+    },
+    "timestamp": "2026-10-18T02:01:26Z"
+  }
+]
