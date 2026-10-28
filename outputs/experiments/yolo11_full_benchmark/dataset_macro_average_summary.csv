@@ -1,0 +1,4 @@
+Tracker,Mean_HOTA (%),Mean_IDF1 (%),Mean_MOTA (%),Total_IDSW,Total_Pred_Tracks,Total_GT_Tracks,Mean_Tracker_FPS,Mean_Pipeline_FPS
+Baseline ByteTrack,38.33,45.21,38.15,223,433,796,1503.2,3.4
+GA-ByteTrack (Tailored),37.7,45.07,38.2,485,693,796,1588.0,3.4
+Fuzzy-Adaptive,38.95,46.34,38.65,224,430,796,1235.2,3.4

@@ -1,0 +1,8 @@
+Detector,Model_Params,Model_GFLOPs,Tracker,Total_Raw_Dets,Pred_Boxes,Pred_Tracks,HOTA (%),IDF1 (%),MOTA (%),AssA (%),DetA (%),IDSW,Det_Latency (ms),Tracker_FPS,End_to_End_FPS
+YOLOv8n,3.2M,8.7,Baseline,6241,889,12,64.83,80.54,65.23,0.0,0.0,1,117.1,2106.4,8.5
+YOLOv8n,3.2M,8.7,GA-ByteTrack,6241,947,13,63.3,78.27,59.82,0.0,0.0,1,117.1,2242.6,8.5
+YOLOv8n,3.2M,8.7,Fuzzy-Adaptive,6241,893,12,64.72,80.38,64.86,0.0,0.0,1,117.1,1908.6,8.5
+YOLO11n,2.6M,6.7,Baseline,6255,906,13,62.68,76.88,67.03,0.0,0.0,2,112.5,2307.2,8.9
+YOLO11n,2.6M,6.7,GA-ByteTrack (Cross-v8),6255,956,14,61.61,75.9,63.6,0.0,0.0,2,112.5,2272.7,8.9
+YOLO11n,2.6M,6.7,GA-ByteTrack (Tailored),6255,928,14,64.32,79.98,66.04,0.0,0.0,1,112.5,2340.8,8.9
+YOLO11n,2.6M,6.7,Fuzzy-Adaptive,6255,912,13,62.97,77.25,67.57,0.0,0.0,2,112.5,1764.5,8.8

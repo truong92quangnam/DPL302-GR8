@@ -6,3 +6,4 @@ eval_tmp/
 tmp_eval/
 .pytest_cache/
 outputs/experiments/**/eval_tmp/
+data/
